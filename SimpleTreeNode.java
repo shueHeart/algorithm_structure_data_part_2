@@ -1,11 +1,9 @@
-package asd2_tree;
-
 import java.util.*;
 
 public class SimpleTreeNode<T> {
-	public T NodeValue; // значение в узле
-	public SimpleTreeNode<T> Parent; // родитель или null для корня
-	public List<SimpleTreeNode<T>> Children; // список дочерних узлов или null
+	public T NodeValue;
+	public SimpleTreeNode<T> Parent;
+	public List<SimpleTreeNode<T>> Children;
 
 	public SimpleTreeNode(T val, SimpleTreeNode<T> parent) {
 		NodeValue = val;
@@ -15,21 +13,24 @@ public class SimpleTreeNode<T> {
 }
 
 class SimpleTree<T> {
-	public SimpleTreeNode<T> Root; // корень, может быть null
+	public SimpleTreeNode<T> Root;
 
 	public SimpleTree(SimpleTreeNode<T> root) {
 		Root = root;
 	}
 
 	public void AddChild(SimpleTreeNode<T> ParentNode, SimpleTreeNode<T> NewChild) {
+		
 		ParentNode.Children.add(NewChild);
+		NewChild.Parent = ParentNode;
+		
 	}
 
 	public void DeleteNode(SimpleTreeNode<T> NodeToDelete) {
-		NodeToDelete.Parent.Children.addAll(NodeToDelete.Children);
 		
 		NodeToDelete.Parent = null;
 		NodeToDelete.Children = null;
+		
 	}
 
 	public List<SimpleTreeNode<T>> GetAllNodes() {
@@ -42,6 +43,7 @@ class SimpleTree<T> {
 		rootSimpleTreeNodes.addAll(GetAllNodes(rootSimpleTreeNodes, 0));
 		
 		return rootSimpleTreeNodes; 
+		
 	}
 	
 	private List<SimpleTreeNode<T>> GetAllNodes (List<SimpleTreeNode<T>> simpleTreeNodes, int index) {
@@ -81,7 +83,7 @@ class SimpleTree<T> {
 		
 		if(index > simpleTreeNodes.size()) return nodes;
 		
-		if (simpleTreeNodes.get(index).equals(val)) {
+		if (simpleTreeNodes.get(index).NodeValue.equals(val)) {
 			nodes.add(simpleTreeNodes.get(index));
 		}
 		
@@ -93,17 +95,45 @@ class SimpleTree<T> {
 	}
 
 	public void MoveNode(SimpleTreeNode<T> OriginalNode, SimpleTreeNode<T> NewParent) {
-		// ваш код перемещения узла вместе с его поддеревом --
-		// в качестве дочернего для узла NewParent
+		
+		OriginalNode.Parent.Children.remove(OriginalNode);
+		
+		AddChild(NewParent, OriginalNode);
+		
 	}
 
 	public int Count() {
-		// количество всех узлов в дереве
-		return 0;
+		
+		if (Root == null) return 0; 
+		
+		return 1 + Count(Root.Children, 0);
+		
+	}
+	
+	private int Count(List<SimpleTreeNode<T>> simpleTreeNodes, int index) {
+		
+		if (simpleTreeNodes == null || index >= simpleTreeNodes.size()) return 0;
+		
+		return 1 + Count(simpleTreeNodes, index + 1) + Count(simpleTreeNodes.get(index).Children, 0);
+		
 	}
 
 	public int LeafCount() {
-		// количество листьев в дереве
-		return 0;
+		
+		if (Root == null) return 0; 
+		
+		return LeafCount(Root.Children, 0);
+		
 	}
+	
+	private int LeafCount(List<SimpleTreeNode<T>> simpleTreeNodes, int index) {
+		
+		if (simpleTreeNodes == null) return 1;
+		
+		if (index >= simpleTreeNodes.size()) return 0;
+		
+		return Count(simpleTreeNodes, index + 1) + Count(simpleTreeNodes.get(index).Children, 0);
+
+	}
+	
 }
