@@ -34,6 +34,7 @@ class SimpleTree<T> {
 		
 		for (SimpleTreeNode<T> simpleTreeNode : NodeToDelete.Children) {
 			simpleTreeNode.Parent = NodeToDelete.Parent;
+			NodeToDelete.Parent.Children.add(simpleTreeNode);
 		}
 		
 		NodeToDelete.Parent = null;
