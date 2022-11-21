@@ -31,11 +31,7 @@ class SimpleTree<T> {
 
 	public void DeleteNode(SimpleTreeNode<T> NodeToDelete) {
 		
-		for (SimpleTreeNode<T> simpleTreeNode : NodeToDelete.Children) {
-			simpleTreeNode.Parent = NodeToDelete.Parent;
-			NodeToDelete.Parent.Children.add(simpleTreeNode);
-		}
-		
+		NodeToDelete.Parent.Children.remove(NodeToDelete);
 		NodeToDelete.Parent = null;
 		NodeToDelete.Children = null;
 		
