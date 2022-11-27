@@ -205,7 +205,7 @@ class BST<T> {
 			return 1 + Count(node.RightChild);
 		}
 		
-		return 0;
+		return 1;
 
 	}
 
