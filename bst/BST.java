@@ -151,15 +151,26 @@ class BST<T> {
 		BSTFind<T> find = FindNodeByKey(key);
 		
 		if (!find.NodeHasKey) return false;
+		
+		boolean deletableNodeFromRight = find.Node.Parent.RightChild != null && find.Node.Parent.RightChild.equals(find.Node);
+		boolean deletableNodeFromLeft = find.Node.Parent.LeftChild != null && find.Node.Parent.LeftChild.equals(find.Node);
+		
+		if (find.Node.RightChild == null && find.Node.LeftChild == null) {
+			
+			if (deletableNodeFromLeft) find.Node.Parent.LeftChild = null;
+			if (deletableNodeFromRight) find.Node.Parent.RightChild = null;
+			
+			find.Node.Parent = null;
+			
+			return true;
+
+		}
 				
 		BSTNode<T> substituteNode = FindSubstituteNode(find.Node.RightChild);
 		
 		if (substituteNode.RightChild != null) {
 			substituteNode.Parent.LeftChild = substituteNode.RightChild;
 		}
-		
-		boolean deletableNodeFromRight = find.Node.Parent.RightChild != null && find.Node.Parent.RightChild.equals(find.Node);
-		boolean deletableNodeFromLeft = find.Node.Parent.LeftChild != null && find.Node.Parent.LeftChild.equals(find.Node);
 		
 		if (deletableNodeFromRight)  {
 			find.Node.Parent.RightChild = substituteNode;
