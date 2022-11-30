@@ -26,14 +26,14 @@ class BSTFind<T> {
 		Node = null;
 	}
 
-	public static <T> BSTFind<T> fromHasKey(BSTNode<?> node, boolean NodeHasKey) {
-		return new BSTFind(NodeHasKey, node);
+	public static <T> BSTFind<T> fromHasKey(BSTNode<?> node) {
+		return new BSTFind(node);
 	}
 
-	private BSTFind(boolean NodeHasKey, BSTNode<T> node) {
+	private BSTFind(BSTNode<T> node) {
 
 		this.Node = node;
-		this.NodeHasKey = NodeHasKey;
+		this.NodeHasKey = true;
 
 	}
 
