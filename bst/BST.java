@@ -52,7 +52,7 @@ class BSTFind<T> {
 
 
 class BST<T> {
-	BSTNode<T> Root;
+	public BSTNode<T> Root;
 
 	public BST(BSTNode<T> node) {
 		Root = node;
@@ -65,7 +65,7 @@ class BST<T> {
 		BSTNode<T> findNode = FindNodeByKey(key, Root);
 		
 		if (findNode.NodeKey == key ) {
-			return BSTFind.fromHasKey(findNode, false); 
+			return BSTFind.fromHasKey(findNode); 
 		}
 		
 		if (key < findNode.NodeKey) {
@@ -109,6 +109,7 @@ class BST<T> {
 		
 		if (find.ToLeft) {
 			find.Node.LeftChild = node;
+			return true;
 		}
 		
 		find.Node.RightChild = node;
@@ -149,7 +150,7 @@ class BST<T> {
 	public boolean DeleteNodeByKey(int key) {
 		
 		BSTFind<T> find = FindNodeByKey(key);
-		
+
 		if (!find.NodeHasKey) return false;
 		
 		boolean deletableNodeFromRight = find.Node.Parent.RightChild != null && find.Node.Parent.RightChild.equals(find.Node);
@@ -165,12 +166,17 @@ class BST<T> {
 			return true;
 
 		}
-				
+
 		BSTNode<T> substituteNode = FindSubstituteNode(find.Node.RightChild);
-		
 		if (substituteNode.RightChild != null) {
 			substituteNode.Parent.LeftChild = substituteNode.RightChild;
+			substituteNode.RightChild.Parent = substituteNode.Parent;
+		}else {
+			substituteNode.Parent.LeftChild = null;	
 		}
+		
+		
+		substituteNode.Parent = find.Node.Parent;
 		
 		if (deletableNodeFromRight)  {
 			find.Node.Parent.RightChild = substituteNode;
@@ -181,6 +187,10 @@ class BST<T> {
 		
 		substituteNode.LeftChild = find.Node.LeftChild;
 		substituteNode.RightChild = find.Node.RightChild;
+		
+		
+		substituteNode.LeftChild.Parent = substituteNode;
+		substituteNode.RightChild.Parent = substituteNode;
 		
 		find.Node.Parent = null;
 		find.Node.LeftChild = null;
@@ -194,15 +204,15 @@ class BST<T> {
 		if (node.LeftChild == null) {
 			return node;
 		}
-		
-		return FindSubstituteNode(node);
+
+		return FindSubstituteNode(node.LeftChild);
 		
 	}
 
 	public int Count() {
 		
 		if (Root == null) return 0;
-		
+
 		return Count(Root);
 		
 	}
