@@ -62,13 +62,16 @@ class BST<T> {
 
 		if (Root == null) return null;
 		
+
+		
 		BSTNode<T> findNode = FindNodeByKey(key, Root);
-	
+		
 		if (findNode.NodeKey == key ) {
 			return BSTFind.fromHasKey(findNode); 
 		}
 		
 		if (key < findNode.NodeKey) {
+			
 			return BSTFind.fromNotHasKey(findNode, true);
 		}
 		
@@ -77,7 +80,7 @@ class BST<T> {
 	}
 
 	private BSTNode<T> FindNodeByKey(int key, BSTNode<T> node) {
-		
+
 		if (key == node.NodeKey) {
 			return node;
 		}
@@ -85,8 +88,8 @@ class BST<T> {
 		if (key < node.NodeKey && node.LeftChild != null) {
 			 return FindNodeByKey(key, node.LeftChild);
 		}
-		
-		if (node.RightChild != null) {
+
+		if (key > node.NodeKey && node.RightChild != null) {
 			return FindNodeByKey(key, node.RightChild);
 		}
 		
@@ -97,7 +100,7 @@ class BST<T> {
 	public boolean AddKeyValue(int key, T val) {
 		
 		BSTFind<T> find = FindNodeByKey(key);
-		
+
 		if (find.NodeHasKey) {
 			return false;
 		}
@@ -106,11 +109,13 @@ class BST<T> {
 		
 		if (find.ToLeft) {
 			find.Node.LeftChild = node;
+			System.out.println(node.NodeKey + " " +find.Node.NodeKey);
 			return true;
 		}
 		
 		find.Node.RightChild = node;
-		
+		System.out.println(node.NodeKey + " " +find.Node.NodeKey);
+
 		return true; 
 		
 	}
@@ -150,13 +155,14 @@ class BST<T> {
 
 		if (!find.NodeHasKey) return false;
 		
-		boolean deletableNodeFromRight = find.Node.Parent.RightChild != null && find.Node.Parent.RightChild.equals(find.Node);
-		boolean deletableNodeFromLeft = find.Node.Parent.LeftChild != null && find.Node.Parent.LeftChild.equals(find.Node);
-
+		boolean deletableNodeFromRight = find.Node.Parent != null && find.Node.Parent.RightChild != null && find.Node.Parent.RightChild.equals(find.Node);
+		boolean deletableNodeFromLeft = find.Node.Parent != null && find.Node.Parent.LeftChild != null && find.Node.Parent.LeftChild.equals(find.Node);
+				
 		if (find.Node.RightChild == null && find.Node.LeftChild == null) {
-
+			
 			if (deletableNodeFromLeft) find.Node.Parent.LeftChild = null;
-			if (deletableNodeFromRight) find.Node.Parent.RightChild = null;
+			else if (deletableNodeFromRight) find.Node.Parent.RightChild = null;
+			else Root = null;
 			
 			find.Node.Parent = null;
 			
@@ -166,8 +172,11 @@ class BST<T> {
 
 		if(find.Node.RightChild == null) {
 			find.Node.LeftChild.Parent = find.Node.Parent;
+
 			if (deletableNodeFromLeft) find.Node.Parent.LeftChild = find.Node.LeftChild;
-			if (deletableNodeFromRight) find.Node.Parent.RightChild = find.Node.LeftChild;
+			else if (deletableNodeFromRight) find.Node.Parent.RightChild = find.Node.LeftChild;
+			else Root = find.Node.LeftChild;
+			
 			find.Node.LeftChild = null;
 			find.Node.Parent = null;
 
@@ -177,34 +186,40 @@ class BST<T> {
 		BSTNode<T> substituteNode = FindSubstituteNode(find.Node.RightChild);
 
 		if (substituteNode.RightChild != null) {
-			substituteNode.Parent.RightChild = substituteNode.RightChild;
+			substituteNode.Parent.LeftChild = substituteNode.RightChild;
 			substituteNode.RightChild.Parent = substituteNode.Parent;
+			substituteNode.RightChild = null;
 		}else if(find.Node.NodeKey != substituteNode.Parent.NodeKey) {
 			substituteNode.Parent.LeftChild = null;	
 		}
 		
-		
 		substituteNode.Parent = find.Node.Parent;
-		
+
 		if (deletableNodeFromRight)  {
 			find.Node.Parent.RightChild = substituteNode;
 		}
 		else if (deletableNodeFromLeft)  {
 			find.Node.Parent.LeftChild = substituteNode;
 		}
+		else {
+			Root = substituteNode;
+			substituteNode.Parent = null;
+		}
 		
 		substituteNode.LeftChild = find.Node.LeftChild;
-		
+		substituteNode.LeftChild.Parent = substituteNode;
+
 		if(substituteNode.NodeKey != find.Node.RightChild.NodeKey) {
 			substituteNode.RightChild = find.Node.RightChild;
+			if (substituteNode.RightChild != null) {
+				substituteNode.RightChild.Parent = substituteNode;
+			}
 		}
-		
+
 		if(substituteNode.LeftChild != null) {
+
 			substituteNode.LeftChild.Parent = substituteNode;
-		}
-		
-		if (substituteNode.RightChild != null) {
-			substituteNode.RightChild.Parent = substituteNode;
+
 		}
 		
 		find.Node.Parent = null;
@@ -215,7 +230,9 @@ class BST<T> {
 		
 	} 
 	private BSTNode<T> FindSubstituteNode(BSTNode<T> node) {
-		
+		if (node.NodeKey == 9) {
+			System.out.println("HERER" + node.NodeKey);
+		}
 		if (node.LeftChild == null) {
 			return node;
 		}
@@ -225,7 +242,7 @@ class BST<T> {
 	}
 
 	public int Count() {
-		
+
 		if (Root == null) return 0;
 
 		return Count(Root);
@@ -233,6 +250,8 @@ class BST<T> {
 	}
 	private int Count(BSTNode<T> node) {
 
+		System.out.print(node.NodeKey + " ");
+		
 		if (node.LeftChild != null && node.RightChild != null) {
 			return 1 + Count(node.LeftChild) + Count(node.RightChild);
 		}else if (node.LeftChild != null) {
@@ -246,4 +265,3 @@ class BST<T> {
 	}
 
 }
-
