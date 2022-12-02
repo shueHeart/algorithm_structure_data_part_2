@@ -114,18 +114,20 @@ class BST<T> {
 		
 		if (find.ToLeft) {
 			find.Node.LeftChild = node;
-			System.out.println(node.NodeKey + " " +find.Node.NodeKey);
 			return true;
 		}
 		
 		find.Node.RightChild = node;
-		System.out.println(node.NodeKey + " " +find.Node.NodeKey);
 
 		return true; 
 		
 	}
 
 	public BSTNode<T> FinMinMax(BSTNode<T> FromNode, boolean FindMax) {
+		
+		if (FromNode == null) {
+			FromNode = Root;
+		}
 		
 		if (FindMax) {
 			return FindMax(FromNode);
@@ -146,7 +148,7 @@ class BST<T> {
 	private BSTNode<T> FindMin(BSTNode<T> Node) {
 		
 		if (Node.LeftChild != null) {
-			return FindMax(Node.LeftChild);
+			return FindMin(Node.LeftChild);
 		}
 		
 		return Node;
@@ -235,9 +237,7 @@ class BST<T> {
 		
 	} 
 	private BSTNode<T> FindSubstituteNode(BSTNode<T> node) {
-		if (node.NodeKey == 9) {
-			System.out.println("HERER" + node.NodeKey);
-		}
+
 		if (node.LeftChild == null) {
 			return node;
 		}
@@ -254,9 +254,7 @@ class BST<T> {
 		
 	}
 	private int Count(BSTNode<T> node) {
-
-		System.out.print(node.NodeKey + " ");
-		
+				
 		if (node.LeftChild != null && node.RightChild != null) {
 			return 1 + Count(node.LeftChild) + Count(node.RightChild);
 		}else if (node.LeftChild != null) {
