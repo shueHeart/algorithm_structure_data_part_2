@@ -266,6 +266,47 @@ class BST<T> {
 		return 1;
 
 	}
+	
+	public ArrayList<BSTNode> WideAllNodes() {
+		
+		ArrayList<BSTNode> nodes = new ArrayList<BSTNode>();
+		
+		ArrayList<BSTNode> nodesRootLevel = new ArrayList<BSTNode>();
+		
+		if (Root != null) {
+			nodes.add(Root);
+			nodesRootLevel.add(Root);
+		}
+		
+		WideAllNodes(nodes, nodesRootLevel);
+		
+		return nodes;
+		
+	}
+	public void WideAllNodes(ArrayList<BSTNode> nodes, ArrayList<BSTNode> nodesLastLevel) {
+		
+		ArrayList<BSTNode> nodesNextLevel = new ArrayList<BSTNode>();
+		
+		for (BSTNode node : nodesLastLevel) {
+			
+			if (node.LeftChild != null) {
+				nodesNextLevel.add(node.LeftChild);
+			}
+			
+			if (node.RightChild != null) {
+				nodesNextLevel.add(node.RightChild);
+			}
+			
+		}
+		
+		if (nodesNextLevel.size() > 0) {
+			
+			nodes.addAll(nodesNextLevel);
+			WideAllNodes(nodes, nodesNextLevel);
+			
+		}	
+		
+	}
 		
 	public ArrayList<BSTNode> DeepAllNodes(int order) {
 		
@@ -308,7 +349,5 @@ class BST<T> {
 		return nodeFlatList;
 		
 	}
-		
-
 
 }
