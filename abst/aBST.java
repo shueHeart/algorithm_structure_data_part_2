@@ -26,6 +26,10 @@ class aBST {
 		
 		while (index < Tree.length) {
 			
+			if (Tree[index] == null) {
+				return null;
+			}
+			
 			if (key == Tree[index]) {
 				return index;
 			}
@@ -39,7 +43,7 @@ class aBST {
 
 		}
 		
-		return null;
+		return null; 
 	}
 
 	public int AddKey(int key) {
