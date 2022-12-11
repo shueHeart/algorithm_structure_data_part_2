@@ -10,7 +10,7 @@ class aBST {
 
 		int tree_size = 0;
 		
-		for (int i = 0; i < depth; ++i) {
+		for (int i = 0; i <= depth; ++i) {
 			tree_size += Math.pow(2, i);
 		}
 		
@@ -52,7 +52,11 @@ class aBST {
 				
 				Tree[index] = key;
 				
-				return Tree[index];
+				return index;
+			}
+			
+			if (Tree[index] == key) {
+				return index;
 			}
 			
 			if (key > Tree[index]) {
