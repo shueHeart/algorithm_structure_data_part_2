@@ -27,7 +27,7 @@ class aBST {
 		while (index < Tree.length) {
 			
 			if (Tree[index] == null) {
-				return null;
+				return 0 - index;
 			}
 			
 			if (key == Tree[index]) {
