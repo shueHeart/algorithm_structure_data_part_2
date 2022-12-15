@@ -1,5 +1,3 @@
-package bbst;
-
 import java.util.*;
 
 public class AlgorithmsDataStructures2 {
