@@ -31,25 +31,25 @@ class BalancedBST {
 		Arrays.sort(a);
 
 		Root = new BSTNode(a[a.length / 2], null);
-		
-		Root.Level = 0;
-		
-		configureBst(0, 0, a.length / 2 - 1, a.length / 2 + 1, a.length - 1, Root, a);
 
+		Root.Level = 0;
+
+		configureBst(0, 0, a.length / 2 - 1, a.length / 2 + 1, a.length - 1, Root, a);
 
 	}
 
 	private void configureBst(int parentBstIndex, int leftStart, int leftEnd, int rightStart, int rightEnd,
 			BSTNode parentNode, int[] a) {
-		
+
 		if (leftStart != -1 && leftStart < a.length && leftEnd != -1 && leftEnd < a.length
 				&& 2 * parentBstIndex + 1 < a.length) {
 
-			int nodeLeftIndex = leftEnd - (leftEnd - leftStart + 1) / 2;			
+			int nodeLeftIndex = leftEnd - (leftEnd - leftStart + 1) / 2;
 			parentNode.LeftChild = new BSTNode(a[nodeLeftIndex], parentNode);
 			parentNode.LeftChild.Level = parentNode.Level + 1;
 
-			configureBst(2 * parentBstIndex + 1, leftStart, nodeLeftIndex - 1, nodeLeftIndex + 1, leftEnd, parentNode.LeftChild, a);
+			configureBst(2 * parentBstIndex + 1, leftStart, nodeLeftIndex - 1, nodeLeftIndex + 1, leftEnd,
+					parentNode.LeftChild, a);
 
 		}
 
@@ -60,33 +60,60 @@ class BalancedBST {
 			parentNode.RightChild = new BSTNode(a[nodeRightIndex], parentNode);
 			parentNode.RightChild.Level = parentNode.Level + 1;
 
-			configureBst(2 * parentBstIndex + 2, rightStart, nodeRightIndex - 1, nodeRightIndex + 1, rightEnd, parentNode.RightChild, a);
+			configureBst(2 * parentBstIndex + 2, rightStart, nodeRightIndex - 1, nodeRightIndex + 1, rightEnd,
+					parentNode.RightChild, a);
 
 		}
 
 	}
-	
+
 	public boolean IsBalanced(BSTNode node) {
-		return IsBalanced(node, 0);
+
+		ArrayList<BSTNode> nodes = new ArrayList<BSTNode>();
+
+		ArrayList<BSTNode> nodesRootLevel = new ArrayList<BSTNode>();
+
+		if (node != null) {
+			nodes.add(node);
+			nodesRootLevel.add(node);
+		}
+
+		return IsBalanced(nodesRootLevel.size(), nodesRootLevel, false, node.Level);
+
 	}
-	
-	private boolean IsBalanced(BSTNode node, int lonelyNodesCount) {
+
+	public boolean IsBalanced(int nodesCount, ArrayList<BSTNode> nodesLastLevel, boolean mayBeNotBalanced, int level) {
+
+		ArrayList<BSTNode> nodesNextLevel = new ArrayList<BSTNode>();
 		
-		if (node.LeftChild != null && node.RightChild != null) {
-			IsBalanced(node.LeftChild, lonelyNodesCount);
-			IsBalanced(node.RightChild, lonelyNodesCount);
-		}else if (node.LeftChild != null) {
-			IsBalanced(node.LeftChild, ++lonelyNodesCount);
-		}else if (node.RightChild != null) {
-			IsBalanced(node.RightChild, ++lonelyNodesCount);
+		int count = 0;
+		
+		for (BSTNode node : nodesLastLevel) {
+
+			if (node.LeftChild != null) {
+				++count;
+			}
+
+			if (node.RightChild != null) {
+				++count;
+			}
+
 		}
 		
-		if (lonelyNodesCount > 1) {
+		if (count != Math.pow(2, level) && mayBeNotBalanced) {
 			return false;
 		}
 		
-		return true;
-
+		if (count != Math.pow(2, level)) {
+			mayBeNotBalanced = true;
+		}
+		
+		if (nodesNextLevel.size() == 0) {
+			return true;
+		}
+		
+		return IsBalanced(count, nodesNextLevel, mayBeNotBalanced, ++level);
+		
 	}
-
+	
 }
