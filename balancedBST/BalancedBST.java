@@ -41,20 +41,23 @@ class BalancedBST {
 	private void configureBst(int parentBstIndex, int leftStart, int leftEnd, int rightStart, int rightEnd,
 			BSTNode parentNode, int[] a) {
 
-		if (leftStart != -1 && leftStart < a.length && leftEnd != -1 && leftEnd < a.length
-				&& 2 * parentBstIndex + 1 < a.length) {
+		int arrayLength = a.length;
+		
+		if (leftStart != -1 && leftStart < arrayLength && leftEnd != -1 && leftEnd < arrayLength
+				&& 2 * parentBstIndex + 1 < arrayLength) {
 
 			int nodeLeftIndex = leftEnd - (leftEnd - leftStart + 1) / 2;
+			
 			parentNode.LeftChild = new BSTNode(a[nodeLeftIndex], parentNode);
 			parentNode.LeftChild.Level = parentNode.Level + 1;
-
+ 
 			configureBst(2 * parentBstIndex + 1, leftStart, nodeLeftIndex - 1, nodeLeftIndex + 1, leftEnd,
 					parentNode.LeftChild, a);
 
 		}
 
-		if (rightStart != -1 && rightStart < a.length && rightEnd != -1 && rightEnd < a.length
-				&& 2 * parentBstIndex + 2 < a.length) {
+		if (rightStart != -1 && rightStart < arrayLength && rightEnd != -1 && rightEnd < arrayLength
+				&& 2 * parentBstIndex + 2 < arrayLength) {
 
 			int nodeRightIndex = rightEnd - (rightEnd - rightStart + 1) / 2;
 			parentNode.RightChild = new BSTNode(a[nodeRightIndex], parentNode);
@@ -82,29 +85,32 @@ class BalancedBST {
 
 	}
 
-	public boolean IsBalanced(int nodesCount, ArrayList<BSTNode> nodesLastLevel, boolean mayBeNotBalanced, int level) {
+	private boolean IsBalanced(int nodesCount, ArrayList<BSTNode> nodesLastLevel, boolean mayBeNotBalanced, int level) {
 
 		ArrayList<BSTNode> nodesNextLevel = new ArrayList<BSTNode>();
 		
 		int count = 0;
-		
+
 		for (BSTNode node : nodesLastLevel) {
 
 			if (node.LeftChild != null) {
+				nodesNextLevel.add(node.LeftChild);
 				++count;
 			}
 
 			if (node.RightChild != null) {
+				nodesNextLevel.add(node.RightChild);
 				++count;
 			}
 
 		}
 		
-		if (count != Math.pow(2, level) && mayBeNotBalanced) {
+		
+		if (nodesCount != Math.pow(2, level) && mayBeNotBalanced) {
 			return false;
 		}
 		
-		if (count != Math.pow(2, level)) {
+		if (nodesCount != Math.pow(2, level)) {
 			mayBeNotBalanced = true;
 		}
 		
