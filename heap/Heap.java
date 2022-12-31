@@ -116,19 +116,20 @@ public class Heap {
 	
 	private boolean setNewKey(int newKeyIndex) {
 		
+		
 		int parentIndex = -1;
 		
 		if (newKeyIndex % 2 == 0) {
-			parentIndex = (newKeyIndex - 2) % 2;
+			parentIndex = (newKeyIndex - 2) / 2;
 		}
 		else if (newKeyIndex % 2 == 1) {
-			parentIndex = (newKeyIndex - 1) % 2;
+			parentIndex = (newKeyIndex - 1) / 2;
 		}
 		
 		if (HeapArray[newKeyIndex] < HeapArray[parentIndex]) {
 			return true;
 		}
-		
+
 		int buf = HeapArray[newKeyIndex];
 		HeapArray[newKeyIndex] = HeapArray[parentIndex];
 		HeapArray[parentIndex] = buf;
