@@ -20,7 +20,6 @@ public class Heap {
 		HeapArray = new int[tree_size];
 
 		for (int i = 0; i < a.length; ++i) {
-			HeapArray[i] = -1;
 			Add(a[i]);
 		}
 		
@@ -37,7 +36,7 @@ public class Heap {
 				rootValue = HeapArray[0];
 				smallIndex = i;
 				HeapArray[0] = HeapArray[i];
-				HeapArray[i] = -1;
+				HeapArray[i] = 0;
 				break;
 			}
 		}
@@ -93,7 +92,7 @@ public class Heap {
 		
 		for (int i = 0; i < HeapArray.length; ++i) {
 			
-			if  (HeapArray[i] == -1) {
+			if  (HeapArray[i] == 0 ) {
 				newKeyIndex = i;
 				HeapArray[i] = key;
 				break;
