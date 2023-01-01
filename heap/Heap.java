@@ -32,7 +32,7 @@ public class Heap {
 		int rootValue = -1;
 		
 		for (int i = HeapArray.length - 1; i >= 0; --i) {
-			if (HeapArray[i] != -1) {
+			if (HeapArray[i] != 0) {
 				rootValue = HeapArray[0];
 				smallIndex = i;
 				HeapArray[0] = HeapArray[i];
@@ -44,8 +44,8 @@ public class Heap {
 		if (smallIndex == -1) {
 			return -1;	
 		}
-		 
-		transformHeap(HeapArray[0], new int[] {0});
+				
+		transformHeap(0, new int[] {0});
 		
 		return rootValue;
 	}
@@ -57,21 +57,18 @@ public class Heap {
 		int maxFromChildsIndex = -1;
 		
 		for (int i = 0; i < parents.length; ++i) {
-			
-			if (parents[i] == -1) {
-				continue;
-			}
-			
+
 			childs[i * 2] = 2 * parents[i] + 1;
 			childs[i * 2 + 1] = 2 * parents[i] + 2;
 			
-			if ( childs[i * 2] < HeapArray.length && (maxFromChildsIndex == -1 || HeapArray[maxFromChildsIndex] < HeapArray[childs[i * 2]])) {
+			if (childs[i * 2] < HeapArray.length && HeapArray[childs[i * 2]] != 0 && (maxFromChildsIndex == -1 || HeapArray[maxFromChildsIndex] < HeapArray[childs[i * 2]])) {
 				maxFromChildsIndex = childs[i * 2];
 			}
 			
-			if ( childs[i * 2 + 1] < HeapArray.length && (maxFromChildsIndex == -1 || HeapArray[maxFromChildsIndex] < HeapArray[childs[i * 2 + 1]])) {
+			if (childs[i * 2 + 1] < HeapArray.length && HeapArray[childs[i * 2 + 1]] != 0 && (maxFromChildsIndex == -1 || HeapArray[maxFromChildsIndex] < HeapArray[childs[i * 2 + 1]])) {
 				maxFromChildsIndex = childs[i * 2 + 1];
 			}
+			
 		}
 		
 		if (maxFromChildsIndex == -1) {
