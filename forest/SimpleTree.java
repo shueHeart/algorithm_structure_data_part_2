@@ -1,6 +1,4 @@
-package forest;
-
-import java.util.*;
+mport java.util.*;
 
 class SimpleTreeNode<T> {
 	public T NodeValue;
@@ -16,7 +14,7 @@ class SimpleTreeNode<T> {
 	}
 }
 
- class SimpleTree<T> {
+class SimpleTree<T> {
 	public SimpleTreeNode<T> Root;
 
 	public SimpleTree(SimpleTreeNode<T> root) {
@@ -154,39 +152,37 @@ class SimpleTreeNode<T> {
 		return LeafCount(simpleTreeNodes, index + 1) + LeafCount(simpleTreeNodes.get(index).Children, 0);
 
 	}
-	
-	public List<T> EvenTrees() {
-		
-		List<T> arrTree = new ArrayList<T>();
-		
-		EvenTrees(Root, arrTree);
-		return arrTree;
-		
-	}
-	private int EvenTrees(SimpleTreeNode<T> node, List<T> arrTree) {
-		int childNodesNumber = 0;
 
-		if (node.Children != null) {
-			for (SimpleTreeNode<T> childNode : node.Children) {
-				
-				++childNodesNumber;
-				
-				int oneBranchChilds = EvenTrees(childNode, arrTree);
+	public List<T> EvenTrees() {
+
+		List<T> arrTree = new ArrayList<T>();
+
+		if (Count() % 2 == 1) {
+			return arrTree;
+		}
 			
-				childNodesNumber += oneBranchChilds;
-				
-				if (childNodesNumber % 2 == 0 && childNode.Level % 2 == 0) {
-					arrTree.add(node.NodeValue);
-					arrTree.add(childNode.NodeValue);
-					childNodesNumber -= oneBranchChilds;
-				}
-				
+		EvenTrees(Root, arrTree);
+		
+		return arrTree;
+
+	}
+
+	private void EvenTrees(SimpleTreeNode<T> node, List<T> arrTree) {
+
+		for (SimpleTreeNode<T> childNode : node.Children) {
+
+			if ((1 + SubTreeSize(childNode)) % 2 == 0) {
+				arrTree.add(node.NodeValue);
+				arrTree.add(childNode.NodeValue);
 			}
 			
-		}
+			EvenTrees(childNode, arrTree);
+		} 
 		
-		return childNodesNumber;
-		
+	}
+	
+	private int SubTreeSize(SimpleTreeNode<T> node) {
+		return Count(node.Children, 0); 
 	}
 
 }
