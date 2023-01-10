@@ -153,9 +153,9 @@ class SimpleTree<T> {
 
 	}
 
-	public List<T> EvenTrees() {
+	public ArrayList<T> EvenTrees() {
 
-		List<T> arrTree = new ArrayList<T>();
+		ArrayList<T> arrTree = new ArrayList<T>();
 
 		if (Count() % 2 == 1) {
 			return arrTree;
@@ -167,7 +167,7 @@ class SimpleTree<T> {
 
 	}
 
-	private void EvenTrees(SimpleTreeNode<T> node, List<T> arrTree) {
+	private void EvenTrees(SimpleTreeNode<T> node, ArrayList<T> arrTree) {
 
 		for (SimpleTreeNode<T> childNode : node.Children) {
 
