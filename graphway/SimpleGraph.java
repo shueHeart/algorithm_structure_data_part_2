@@ -98,7 +98,6 @@ class SimpleGraph {
 
 		way.add(vertex[VNowIndex]);
 		
-		
 		for (int i = 0; i < max_vertex; ++i) {
 			
 
