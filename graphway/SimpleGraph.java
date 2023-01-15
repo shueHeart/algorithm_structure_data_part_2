@@ -98,8 +98,8 @@ class SimpleGraph {
 
 		way.add(vertex[VNowIndex]);
 		
+		
 		for (int i = 0; i < max_vertex; ++i) {
-			
 
 			if (vertex[i] == null) {
 				continue;
@@ -112,6 +112,10 @@ class SimpleGraph {
 			if (i == VTo) {
 				way.add(vertex[i]);
 				return;
+			}
+			
+			if (i == VNowIndex) {
+				continue;
 			}
 			
 			DepthFirstSearch(way, i, VTo);
