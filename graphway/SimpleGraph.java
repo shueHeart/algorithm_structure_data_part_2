@@ -1,6 +1,4 @@
 
-import java.util.*;
-
 class Vertex {
 	public int Value;
 	public boolean Hit;
@@ -98,8 +96,15 @@ class SimpleGraph {
 
 		way.add(vertex[VNowIndex]);
 		
+		vertex[VNowIndex].Hit = true;
+		
+		ArrayList<Integer> filteredAdjacentVertices = new ArrayList<Integer>();
 		
 		for (int i = 0; i < max_vertex; ++i) {
+			
+			if (vertex[i].Hit) {
+				continue;
+			}
 
 			if (vertex[i] == null) {
 				continue;
@@ -113,18 +118,25 @@ class SimpleGraph {
 				way.add(vertex[i]);
 				return;
 			}
-			
-			if (i == VNowIndex) {
-				continue;
-			}
-			
-			DepthFirstSearch(way, i, VTo);
+
+			filteredAdjacentVertices.add(i);
 			
 		}
 
-		if (way.get(way.size() - 1).Value != vertex[VTo].Value) {
-			way.remove(way.size() - 1);
+		for (Integer filteredAdjacentVertice : filteredAdjacentVertices) { 
+			
+			DepthFirstSearch(way, filteredAdjacentVertice, VTo);
+			
 		}
+
+		
+		if (way.get(way.size() - 1).Value != vertex[VTo].Value) {
+			
+			way.remove(way.size() - 1);
+			
+		}
+		
+			
 		
 	}
 
