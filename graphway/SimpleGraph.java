@@ -1,4 +1,6 @@
 
+import java.util.*;
+
 class Vertex {
 	public int Value;
 	public boolean Hit;
@@ -88,6 +90,10 @@ class SimpleGraph {
 
 		DepthFirstSearch(way, VFrom, VTo);
 
+		for (Vertex vert : vertex) {
+			vert.Hit = false;
+		}
+		
 		return way;
 
 	}
