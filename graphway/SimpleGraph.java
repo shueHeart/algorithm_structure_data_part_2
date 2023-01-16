@@ -87,7 +87,7 @@ class SimpleGraph {
 	public ArrayList<Vertex> DepthFirstSearch(int VFrom, int VTo) {
 
 		ArrayList<Vertex> way = new ArrayList<Vertex>();
-
+		
 		DepthFirstSearch(way, VFrom, VTo);
 
 		for (Vertex vert : vertex) {
@@ -98,7 +98,7 @@ class SimpleGraph {
 
 	}
 
-	private void DepthFirstSearch(ArrayList<Vertex> way, int VNowIndex, int VTo) {
+	private boolean DepthFirstSearch(ArrayList<Vertex> way, int VNowIndex, int VTo) {
 
 		way.add(vertex[VNowIndex]);
 		
@@ -108,41 +108,36 @@ class SimpleGraph {
 		
 		for (int i = 0; i < max_vertex; ++i) {
 			
-			if (vertex[i].Hit) {
-				continue;
-			}
-
-			if (vertex[i] == null) {
-				continue;
-			}
-			
 			if (m_adjacency[VNowIndex][i] == 0) {
 				continue;
 			}
 			
-			if (i == VTo) {
+			if (i == VTo) {		
 				way.add(vertex[i]);
-				return;
+				return true;
 			}
-
+			
+			if (vertex[i].Hit) {
+				continue;
+			}
+			
+			if (vertex[i] == null) {
+				continue;
+			}
+		
 			filteredAdjacentVertices.add(i);
 			
 		}
-
+		
 		for (Integer filteredAdjacentVertice : filteredAdjacentVertices) { 
-			
-			DepthFirstSearch(way, filteredAdjacentVertice, VTo);
-			
-		}
-
-		
-		if (way.get(way.size() - 1).Value != vertex[VTo].Value) {
-			
-			way.remove(way.size() - 1);
-			
+			if (DepthFirstSearch(way, filteredAdjacentVertice, VTo)) {
+				return true;
+			}
 		}
 		
-			
+		way.remove(way.size() - 1);
+		
+		return false;
 		
 	}
 
