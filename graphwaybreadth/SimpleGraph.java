@@ -1,5 +1,3 @@
-package graphway;
-
 import java.util.*;
 
 class Vertex {
@@ -89,15 +87,73 @@ class SimpleGraph {
 
 		Queue<Integer> queue = new Queue<Integer>();
 		
-		ArrayList<Vertex> way = new ArrayList<Vertex>();
+		queue.enqueue(VFrom);
 		
-		BreadthFirstSearch(VFrom, VTo, way, queue);
+		BreadthFirstSearch(VFrom, VTo, queue);
+				
+		if (queue.size() == 0) {
+			return new ArrayList<Vertex>();
+		}
 		
-		return way;
+		for (Integer stElem : queue.storage) {
+			System.out.println("ququququ: " + stElem);
+		}
+		
+		return generateWay(queue, VFrom, VTo);
 		
 	}
 	
-	private void BreadthFirstSearch(int VNow, int VTo, ArrayList<Vertex> way, Queue<Integer> queue) {
+	private boolean BreadthFirstSearch(int VNow, int VTo, Queue<Integer> queue) {
+		
+		vertex[VNow].Hit = true;
+				
+		for (int i = 0; i < max_vertex; ++i) {
+			
+			if (m_adjacency[VNow][i] == 0) {
+				continue;
+			}
+			
+			if (i == VTo) {
+				queue.enqueue(i);
+				return true;
+			}
+			
+			if (vertex[i].Hit) {
+				continue;
+			}
+			
+			queue.enqueue(i);
+			if (BreadthFirstSearch(i, VTo, queue)) {
+				return true;
+			}
+			
+		}
+		
+		if (queue.size() == 0 ) {
+			return false;
+		}
+		
+		return BreadthFirstSearch(queue.dequeue(), VTo, queue);
+		
+	}
+	
+	private ArrayList<Vertex> generateWay(Queue<Integer> queue, int VFrom, int VTo) {
+		
+		ArrayList<Vertex> way = new ArrayList<Vertex>();
+
+		for (Integer i = queue.dequeue(); i != null && i != VFrom; i = queue.dequeue()) {
+			
+		}
+
+		way.add(vertex[VFrom]);
+
+		for (Integer i = queue.dequeue(); queue.size() != 0; i = queue.dequeue()) {
+			way.add(vertex[i]);
+		}
+		
+		way.add(vertex[VTo]);
+
+		return way;
 		
 	}
 
@@ -105,7 +161,7 @@ class SimpleGraph {
 
 class Queue<T> {
 
-	private List<T> storage;
+	public List<T> storage;
 
 	public Queue() {
 		storage = new ArrayList<T>();
