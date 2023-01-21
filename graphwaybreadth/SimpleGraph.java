@@ -10,7 +10,7 @@ class Vertex {
 	}
 }
 
-public class SimpleGraph {
+class SimpleGraph {
 	public Vertex[] vertex;
 	public int[][] m_adjacency;
 	public int max_vertex;
