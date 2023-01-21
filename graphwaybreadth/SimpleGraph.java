@@ -85,6 +85,10 @@ class SimpleGraph {
 
 	public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo) {
 
+		for (Vertex vert : vertex) {
+			vert.Hit = false;
+		}
+		
 		Queue<Integer> queue = new Queue<Integer>();		
 		
 		ArrayList<Vertex> way = new ArrayList<Vertex>();
