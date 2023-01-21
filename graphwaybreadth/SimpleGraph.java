@@ -10,7 +10,7 @@ class Vertex {
 	}
 }
 
-class SimpleGraph {
+public class SimpleGraph {
 	public Vertex[] vertex;
 	public int[][] m_adjacency;
 	public int max_vertex;
@@ -95,7 +95,6 @@ class SimpleGraph {
 		
 		if (way.size() == 1) {
 			way.remove(0);
-			return way;
 		}
 		
 		return way;
@@ -135,10 +134,11 @@ class SimpleGraph {
 		
 		way.add(vertex[dequeuedIndex]);
 		
-		if (BreadthFirstSearch(dequeuedIndex, VTo, queue, way)) return true;
-		
-		way.remove(way.size() - 1);
-		
+		if (!BreadthFirstSearch(dequeuedIndex, VTo, queue, way)) {
+			way.remove(vertex[dequeuedIndex]);
+			return false;
+		}
+
 		return false;
 		
 	}
