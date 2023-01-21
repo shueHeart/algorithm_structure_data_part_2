@@ -85,25 +85,24 @@ class SimpleGraph {
 
 	public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo) {
 
-		Queue<Integer> queue = new Queue<Integer>();
+		Queue<Integer> queue = new Queue<Integer>();		
 		
-		queue.enqueue(VFrom);
+		ArrayList<Vertex> way = new ArrayList<Vertex>();
 		
-		BreadthFirstSearch(VFrom, VTo, queue);
-				
-		if (queue.size() == 0) {
-			return new ArrayList<Vertex>();
+		way.add(vertex[VFrom]);
+		
+		BreadthFirstSearch(VFrom, VTo, queue, way);
+		
+		if (way.size() == 1) {
+			way.remove(0);
+			return way;
 		}
 		
-		for (Integer stElem : queue.storage) {
-			System.out.println("ququququ: " + stElem);
-		}
-		
-		return generateWay(queue, VFrom, VTo);
+		return way;
 		
 	}
 	
-	private boolean BreadthFirstSearch(int VNow, int VTo, Queue<Integer> queue) {
+	private boolean BreadthFirstSearch(int VNow, int VTo, Queue<Integer> queue, ArrayList<Vertex> way) {
 		
 		vertex[VNow].Hit = true;
 				
@@ -114,7 +113,9 @@ class SimpleGraph {
 			}
 			
 			if (i == VTo) {
-				queue.enqueue(i);
+				
+				way.add(vertex[i]);
+				
 				return true;
 			}
 			
@@ -123,37 +124,22 @@ class SimpleGraph {
 			}
 			
 			queue.enqueue(i);
-			if (BreadthFirstSearch(i, VTo, queue)) {
-				return true;
-			}
 			
 		}
 		
-		if (queue.size() == 0 ) {
+		if (queue.size() == 0) {
 			return false;
 		}
 		
-		return BreadthFirstSearch(queue.dequeue(), VTo, queue);
+		int dequeuedIndex = queue.dequeue();
 		
-	}
-	
-	private ArrayList<Vertex> generateWay(Queue<Integer> queue, int VFrom, int VTo) {
+		way.add(vertex[dequeuedIndex]);
 		
-		ArrayList<Vertex> way = new ArrayList<Vertex>();
-
-		for (Integer i = queue.dequeue(); i != null && i != VFrom; i = queue.dequeue()) {
-			
-		}
-
-		way.add(vertex[VFrom]);
-
-		for (Integer i = queue.dequeue(); queue.size() != 0; i = queue.dequeue()) {
-			way.add(vertex[i]);
-		}
+		if (BreadthFirstSearch(dequeuedIndex, VTo, queue, way)) return true;
 		
-		way.add(vertex[VTo]);
-
-		return way;
+		way.remove(way.size() - 1);
+		
+		return false;
 		
 	}
 
